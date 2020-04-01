@@ -17,6 +17,8 @@ class MyGame(arcade.Window):
 
         arcade.set_background_color(arcade.color.BLACK)
 
+        self.set_update_rate(1/60)
+
         # initialize player 1 variables
         self.player1_y = None
         self.player1_up = None
@@ -64,16 +66,20 @@ class MyGame(arcade.Window):
         need it.
         """
         # player 1 movement
-        if self.player1_up:
-            self.player1_y += player_movespeed * delta_time
-        if self.player1_down:
-            self.player1_y -= player_movespeed * delta_time
+        if self.player1_y < SCREEN_HEIGHT - player_height / 2:
+            if self.player1_up:
+                self.player1_y += player_movespeed * delta_time
+        if self.player1_y > 0 + player_height / 2:
+            if self.player1_down:
+                self.player1_y -= player_movespeed * delta_time
 
         # player 2 movement
-        if self.player2_up:
-            self.player2_y += player_movespeed * delta_time
-        if self.player2_down:
-            self.player2_y -= player_movespeed * delta_time
+        if self.player2_y < SCREEN_HEIGHT - player_height / 2:
+            if self.player2_up:
+                self.player2_y += player_movespeed * delta_time
+        if self.player2_y > 0 + player_height / 2:
+            if self.player2_down:
+                self.player2_y -= player_movespeed * delta_time
 
     def on_key_press(self, key, key_modifiers):
         """
