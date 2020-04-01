@@ -94,6 +94,10 @@ class MyGame(arcade.Window):
         elif key == arcade.key.DOWN:
             self.player2_down = True
 
+        # exit window if escape key is pressed
+        if key == arcade.key.ESCAPE:
+            arcade.close_window()
+
     def on_key_release(self, key, key_modifiers):
         """
         Called whenever the user lets off a previously pressed key.
