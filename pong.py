@@ -6,7 +6,7 @@ SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Pong"
 player_movespeed = 300
 player_height = 75
-ball_speed = 600
+ball_speed = 200
 ball_radius = 10
 
 
@@ -57,9 +57,19 @@ class MyGame(arcade.Window):
         # ball variables
         self.ball_x = SCREEN_WIDTH / 2
         self.ball_y = SCREEN_HEIGHT / 2
-        self.ball_radius = ball_radius
-        self.ball_deltaX = ball_speed
-        self.ball_deltaY = ball_speed
+        randomNum = random.randint(0, 3)
+        if randomNum == 0:
+            self.ball_deltaX = ball_speed
+            self.ball_deltaY = ball_speed
+        elif randomNum == 1:
+            self.ball_deltaX = ball_speed * -1
+            self.ball_deltaY = ball_speed
+        elif randomNum == 2:
+            self.ball_deltaX = ball_speed
+            self.ball_deltaY = ball_speed * -1
+        elif randomNum == 3:
+            self.ball_deltaX = ball_speed * -1
+            self.ball_deltaY = ball_speed * -1
 
     def on_draw(self):
         """
@@ -102,6 +112,14 @@ class MyGame(arcade.Window):
                 self.player2_y -= player_movespeed * delta_time
 
         # ball movement
+        self.ball_x += self.ball_deltaX * delta_time
+        self.ball_y -= self.ball_deltaY * delta_time
+
+        # flips ball movement when hitting border
+        if self.ball_x > SCREEN_WIDTH - ball_radius / 2 or self.ball_x < 0 + ball_radius / 2:
+            self.ball_deltaX *= -1
+        if self.ball_y > SCREEN_HEIGHT - ball_radius /2 or self.ball_y < 0 + ball_radius /2:
+            self.ball_deltaY *= -1
 
     def on_key_press(self, key, key_modifiers):
         """
