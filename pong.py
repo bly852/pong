@@ -1,10 +1,13 @@
 import arcade
+import random
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Pong"
 player_movespeed = 300
-player_height = 50
+player_height = 75
+ball_speed = 600
+ball_radius = 10
 
 
 class MyGame(arcade.Window):
@@ -29,6 +32,13 @@ class MyGame(arcade.Window):
         self.player2_up = None
         self.player2_down = None
 
+        # initialize ball variables
+        self.ball_x = None
+        self.ball_y = None
+        self.ball_radius = None
+        self.ball_deltaX = None
+        self.ball_deltaY = None
+
     def setup(self):
         """
         sets up all variables for the game
@@ -44,6 +54,13 @@ class MyGame(arcade.Window):
         self.player2_up = False
         self.player2_down = False
 
+        # ball variables
+        self.ball_x = SCREEN_WIDTH / 2
+        self.ball_y = SCREEN_HEIGHT / 2
+        self.ball_radius = ball_radius
+        self.ball_deltaX = ball_speed
+        self.ball_deltaY = ball_speed
+
     def on_draw(self):
         """
         Render the screen.
@@ -58,6 +75,9 @@ class MyGame(arcade.Window):
 
         # player 2
         arcade.draw_rectangle_filled((SCREEN_WIDTH / 2 + SCREEN_WIDTH / 3), self.player2_y, 10, player_height, arcade.color.WHITE)
+
+        # ball
+        arcade.draw_circle_filled(self.ball_x, self.ball_y, ball_radius, arcade.color.WHITE)
 
     def on_update(self, delta_time):
         """
@@ -80,6 +100,8 @@ class MyGame(arcade.Window):
         if self.player2_y > 0 + player_height / 2:
             if self.player2_down:
                 self.player2_y -= player_movespeed * delta_time
+
+        # ball movement
 
     def on_key_press(self, key, key_modifiers):
         """
@@ -120,21 +142,9 @@ class MyGame(arcade.Window):
         elif key == arcade.key.DOWN:
             self.player2_down = False
 
-    def on_mouse_motion(self, x, y, delta_x, delta_y):
-        """
-        Called whenever the mouse moves.
-        """
-        pass
-
     def on_mouse_press(self, x, y, button, key_modifiers):
         """
         Called when the user presses a mouse button.
-        """
-        pass
-
-    def on_mouse_release(self, x, y, button, key_modifiers):
-        """
-        Called when a user releases a mouse button.
         """
         pass
 
