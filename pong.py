@@ -37,7 +37,6 @@ class MyGame(arcade.Window):
         # initialize ball variables
         self.ball_x = None
         self.ball_y = None
-        self.ball_radius = None
         self.ball_deltaX = None
         self.ball_deltaY = None
 
@@ -126,9 +125,9 @@ class MyGame(arcade.Window):
             self.ball_deltaY *= -1
 
         # flips ball movement when colliding with a player
-        if self.ball_x < self.player1_x and self.player1_y + player_height / 2 > self.ball_y > self.player1_y - player_height / 2:
+        if self.ball_x + ball_radius < self.player1_x and self.player1_y + player_height / 2 > self.ball_y > self.player1_y - player_height / 2:
             self.ball_deltaX *= -1
-        elif self.ball_x > self.player2_x and self.player2_y + player_height / 2 > self.ball_y > self.player2_y - player_height / 2:
+        elif self.ball_x + ball_radius > self.player2_x and self.player2_y + player_height / 2 > self.ball_y > self.player2_y - player_height / 2:
             self.ball_deltaX *= -1
 
     def on_key_press(self, key, key_modifiers):
