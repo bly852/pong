@@ -59,24 +59,9 @@ class MyGame(arcade.Window):
         self.player2_x = SCREEN_WIDTH / 2 + SCREEN_WIDTH / 3
         self.player2_up = False
         self.player2_down = False
-        self.player1_score = 0
+        self.player2_score = 0
 
-        # ball variables
-        self.ball_x = SCREEN_WIDTH / 2
-        self.ball_y = SCREEN_HEIGHT / 2
-        randomNum = random.randint(0, 3)
-        if randomNum == 0:
-            self.ball_deltaX = ball_speed
-            self.ball_deltaY = ball_speed
-        elif randomNum == 1:
-            self.ball_deltaX = ball_speed * -1
-            self.ball_deltaY = ball_speed
-        elif randomNum == 2:
-            self.ball_deltaX = ball_speed
-            self.ball_deltaY = ball_speed * -1
-        elif randomNum == 3:
-            self.ball_deltaX = ball_speed * -1
-            self.ball_deltaY = ball_speed * -1
+        self.spawn_ball()
 
     def on_draw(self):
         """
@@ -89,10 +74,13 @@ class MyGame(arcade.Window):
 
         # player 1
         arcade.draw_rectangle_filled(self.player1_x, self.player1_y, 10, player_height, arcade.color.WHITE)
-        arcade.draw_text("0", SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2, arcade.color.WHITE, font_size=60, align="center")
+        arcade.draw_text(str(self.player1_score), SCREEN_WIDTH / 2 - SCREEN_WIDTH / 6, SCREEN_HEIGHT / 2,
+                         arcade.color.SOAP, font_size=130, align="center", anchor_x="center", anchor_y="center")
 
         # player 2
         arcade.draw_rectangle_filled(self.player2_x, self.player2_y, 10, player_height, arcade.color.WHITE)
+        arcade.draw_text(str(self.player2_score), SCREEN_WIDTH / 6 + SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                         arcade.color.SOAP, font_size=130, align="center", anchor_x="center", anchor_y="center")
 
         # ball
         arcade.draw_circle_filled(self.ball_x, self.ball_y, ball_radius, arcade.color.WHITE)
@@ -123,10 +111,16 @@ class MyGame(arcade.Window):
         self.ball_x += self.ball_deltaX * delta_time
         self.ball_y -= self.ball_deltaY * delta_time
 
-        # flips ball movement when hitting border
-        if self.ball_x > SCREEN_WIDTH - ball_radius / 2 or self.ball_x < 0 + ball_radius / 2:
-            self.ball_deltaX *= -1
-        if self.ball_y > SCREEN_HEIGHT - ball_radius /2 or self.ball_y < 0 + ball_radius /2:
+        # scoring system
+        if self.ball_x < 0 + ball_radius:
+            self.player2_score += 1
+            self.spawn_ball()
+        if self.ball_x > SCREEN_WIDTH - ball_radius:
+            self.player1_score += 1
+            self.spawn_ball()
+
+        # prevents ball from exiting the screen vertically
+        if self.ball_y > SCREEN_HEIGHT - ball_radius or self.ball_y < 0 + ball_radius:
             self.ball_deltaY *= -1
 
         # flips ball movement when colliding with a player
@@ -179,6 +173,24 @@ class MyGame(arcade.Window):
         Called when the user presses a mouse button.
         """
         pass
+
+    def spawn_ball(self):
+        # ball variables
+        self.ball_x = SCREEN_WIDTH / 2
+        self.ball_y = SCREEN_HEIGHT / 2
+        randomNum = random.randint(0, 3)
+        if randomNum == 0:
+            self.ball_deltaX = ball_speed
+            self.ball_deltaY = ball_speed
+        elif randomNum == 1:
+            self.ball_deltaX = ball_speed * -1
+            self.ball_deltaY = ball_speed
+        elif randomNum == 2:
+            self.ball_deltaX = ball_speed
+            self.ball_deltaY = ball_speed * -1
+        elif randomNum == 3:
+            self.ball_deltaX = ball_speed * -1
+            self.ball_deltaY = ball_speed * -1
 
 
 def main():
