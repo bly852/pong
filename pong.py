@@ -6,7 +6,7 @@ SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Pong"
 player_movespeed = 300
 player_height = 75
-ball_speed = 200
+ball_speed = 300
 ball_radius = 10
 
 
@@ -27,12 +27,14 @@ class MyGame(arcade.Window):
         self.player1_x = None
         self.player1_up = None
         self.player1_down = None
+        self.player1_score = None
 
         # initialize player 2 variables
         self.player2_y = None
         self.player2_x = None
         self.player2_up = None
         self.player2_down = None
+        self.player2_score = None
 
         # initialize ball variables
         self.ball_x = None
@@ -50,12 +52,14 @@ class MyGame(arcade.Window):
         self.player1_x = SCREEN_WIDTH / 2 - SCREEN_WIDTH / 3
         self.player1_up = False
         self.player1_down = False
+        self.player1_score = 0
 
         # player 2 variables
         self.player2_y = SCREEN_HEIGHT / 2
         self.player2_x = SCREEN_WIDTH / 2 + SCREEN_WIDTH / 3
         self.player2_up = False
         self.player2_down = False
+        self.player1_score = 0
 
         # ball variables
         self.ball_x = SCREEN_WIDTH / 2
@@ -85,6 +89,7 @@ class MyGame(arcade.Window):
 
         # player 1
         arcade.draw_rectangle_filled(self.player1_x, self.player1_y, 10, player_height, arcade.color.WHITE)
+        arcade.draw_text("0", SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2, arcade.color.WHITE, font_size=60, align="center")
 
         # player 2
         arcade.draw_rectangle_filled(self.player2_x, self.player2_y, 10, player_height, arcade.color.WHITE)
@@ -125,7 +130,7 @@ class MyGame(arcade.Window):
             self.ball_deltaY *= -1
 
         # flips ball movement when colliding with a player
-        if self.ball_x + ball_radius < self.player1_x and self.player1_y + player_height / 2 > self.ball_y > self.player1_y - player_height / 2:
+        if self.ball_x - ball_radius < self.player1_x and self.player1_y + player_height / 2 > self.ball_y > self.player1_y - player_height / 2:
             self.ball_deltaX *= -1
         elif self.ball_x + ball_radius > self.player2_x and self.player2_y + player_height / 2 > self.ball_y > self.player2_y - player_height / 2:
             self.ball_deltaX *= -1
