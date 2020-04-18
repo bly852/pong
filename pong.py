@@ -24,11 +24,13 @@ class MyGame(arcade.Window):
 
         # initialize player 1 variables
         self.player1_y = None
+        self.player1_x = None
         self.player1_up = None
         self.player1_down = None
 
         # initialize player 2 variables
         self.player2_y = None
+        self.player2_x = None
         self.player2_up = None
         self.player2_down = None
 
@@ -46,11 +48,13 @@ class MyGame(arcade.Window):
 
         # player 1 variables
         self.player1_y = SCREEN_HEIGHT / 2
+        self.player1_x = SCREEN_WIDTH / 2 - SCREEN_WIDTH / 3
         self.player1_up = False
         self.player1_down = False
 
         # player 2 variables
         self.player2_y = SCREEN_HEIGHT / 2
+        self.player2_x = SCREEN_WIDTH / 2 + SCREEN_WIDTH / 3
         self.player2_up = False
         self.player2_down = False
 
@@ -81,10 +85,10 @@ class MyGame(arcade.Window):
         arcade.start_render()
 
         # player 1
-        arcade.draw_rectangle_filled((SCREEN_WIDTH / 2 - SCREEN_WIDTH / 3), self.player1_y, 10, player_height, arcade.color.WHITE)
+        arcade.draw_rectangle_filled(self.player1_x, self.player1_y, 10, player_height, arcade.color.WHITE)
 
         # player 2
-        arcade.draw_rectangle_filled((SCREEN_WIDTH / 2 + SCREEN_WIDTH / 3), self.player2_y, 10, player_height, arcade.color.WHITE)
+        arcade.draw_rectangle_filled(self.player2_x, self.player2_y, 10, player_height, arcade.color.WHITE)
 
         # ball
         arcade.draw_circle_filled(self.ball_x, self.ball_y, ball_radius, arcade.color.WHITE)
@@ -120,6 +124,12 @@ class MyGame(arcade.Window):
             self.ball_deltaX *= -1
         if self.ball_y > SCREEN_HEIGHT - ball_radius /2 or self.ball_y < 0 + ball_radius /2:
             self.ball_deltaY *= -1
+
+        # flips ball movement when colliding with a player
+        if self.ball_x < self.player1_x and self.player1_y + player_height / 2 > self.ball_y > self.player1_y - player_height / 2:
+            self.ball_deltaX *= -1
+        elif self.ball_x > self.player2_x and self.player2_y + player_height / 2 > self.ball_y > self.player2_y - player_height / 2:
+            self.ball_deltaX *= -1
 
     def on_key_press(self, key, key_modifiers):
         """
