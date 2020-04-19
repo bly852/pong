@@ -4,7 +4,7 @@ import random
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Pong"
-player_movespeed = 300
+player_movespeed = 400
 player_height = 75
 ball_speed = 300
 ball_radius = 10
@@ -20,7 +20,7 @@ class MyGame(arcade.Window):
 
         arcade.set_background_color(arcade.color.BLACK)
 
-        self.set_update_rate(1/60)
+        self.set_update_rate(1/120)
 
         # initialize player 1 variables
         self.player1_y = None
@@ -41,6 +41,8 @@ class MyGame(arcade.Window):
         self.ball_y = None
         self.ball_deltaX = None
         self.ball_deltaY = None
+
+        self.checking_collision = True
 
     def setup(self):
         """
@@ -124,10 +126,12 @@ class MyGame(arcade.Window):
             self.ball_deltaY *= -1
 
         # flips ball movement when colliding with a player
-        if self.ball_x - ball_radius < self.player1_x and self.player1_y + player_height / 2 > self.ball_y > self.player1_y - player_height / 2:
+        if self.ball_x - ball_radius <= self.player1_x + 10 and self.ball_x + ball_radius > self.player1_x - 10 and self.player1_y + player_height / 2 > self.ball_y > self.player1_y - player_height / 2 and self.checking_collision == True:
             self.ball_deltaX *= -1
-        elif self.ball_x + ball_radius > self.player2_x and self.player2_y + player_height / 2 > self.ball_y > self.player2_y - player_height / 2:
+            self.checking_collision = False
+        if self.ball_x + ball_radius >= self.player2_x - 10 and self.ball_x - ball_radius < self.player2_x + 10 and self.player2_y + player_height / 2 > self.ball_y > self.player2_y - player_height / 2 and self.checking_collision == True:
             self.ball_deltaX *= -1
+            self.checking_collision = False
 
     def on_key_press(self, key, key_modifiers):
         """
@@ -191,6 +195,9 @@ class MyGame(arcade.Window):
         elif randomNum == 3:
             self.ball_deltaX = ball_speed * -1
             self.ball_deltaY = ball_speed * -1
+
+        # lets game know that the ball is live
+        self.checking_collision = True
 
 
 def main():
