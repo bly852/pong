@@ -126,11 +126,17 @@ class MyGame(arcade.Window):
             self.ball_deltaY *= -1
 
         # flips ball movement when colliding with a player
+        # rest collision checking
+        self.checking_collision = True
+        # player 1 check
         if self.ball_x - ball_radius <= self.player1_x + 10 and self.ball_x + ball_radius > self.player1_x - 10 and self.player1_y + player_height / 2 > self.ball_y > self.player1_y - player_height / 2 and self.checking_collision == True:
             self.ball_deltaX *= -1
+            self.ball_x += 1 # prevents ball from looping its direction
             self.checking_collision = False
+        # player 2 check
         if self.ball_x + ball_radius >= self.player2_x - 10 and self.ball_x - ball_radius < self.player2_x + 10 and self.player2_y + player_height / 2 > self.ball_y > self.player2_y - player_height / 2 and self.checking_collision == True:
             self.ball_deltaX *= -1
+            self.ball_x -= 1  # prevents ball from looping its direction
             self.checking_collision = False
 
     def on_key_press(self, key, key_modifiers):
